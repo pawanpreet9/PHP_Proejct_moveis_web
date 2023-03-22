@@ -3,14 +3,14 @@
 /*******w******** 
     
     Name:Pawanpreet Kaur
-    Date:3-02-2023
-    Description:An Html and php code for new post page of the blog.
-    Adding new post blog into database and index page.
+    Date:
+    Description:
+    
 
 ****************/
 
 require('connect.php');
-require('authenicate.php');
+require('authenticate.php');
     if ($_POST && !empty($_POST['name']) && !empty($_POST['description'] && !empty($_POST['language']))) {
         //  Sanitize user input to escape HTML entities and filter out dangerous characters.
         $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -84,10 +84,12 @@ require('authenicate.php');
             
         <?php endif ?>
         </div>
+        <a href="index.php"><pre>Home</pre></a>
+            <a href="addmovies.php"><pre>Add movies</pre></a>
 
     
     <div id="footer">
-        Copywrong 2023 - No Rights Reserved
+        
     </div>
 </div>
     
