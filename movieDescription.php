@@ -2,12 +2,12 @@
 /*******w******** 
     
     Name:Pawanpreet Kaur
-    Date:03-02-2023
-    Description:Html and php code to view the specific full blog post.
+    Date:
+    Description:
 
 ****************/
 require('connect.php');
-require('authenticate.php');
+
     // Build and prepare SQL String with :id placeholder parameter.
     $query = "SELECT * FROM movies WHERE movie_id = :id LIMIT 1";
     $statement = $db->prepare($query);
@@ -28,7 +28,7 @@ require('authenticate.php');
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" type="text/css" href="main.css">
+	<link rel="stylesheet" type="text/css" href="style.css">
 	<title>Blockbuster Movies - <?= $row['movie_name'] ?></title>
 </head>
 <body>
@@ -38,10 +38,10 @@ require('authenticate.php');
 		</div>
 		<ul id="menu">
 			<li><a href="index.php">Home</a></li>
-			<li><a href="addmovies.php">Add movies</a></li>
+			<li><a href="admin.php">Admin</a></li>
 		</ul>
-		<div id="all_blogs">
-			<div class="blog_post">
+		<div id="all_movies">
+			<div class="post">
 				<h2><?= $row['movie_name'] ?></h2>
 				<p>
 					<small>
@@ -50,9 +50,11 @@ require('authenticate.php');
 					</small>
 				</p>
 				<p>More Info</p>
-				<div class="blog_content">
+				<div class="movie_content">
 					<ul><li>Language:<?= $row['language'] ?></li>
 						<li>Actors:<?= $row['actor_names'] ?></li>
+						<li>Directed By:<?= $row['director_names'] ?></li>
+						<li>Price: $ <?= $row['price'] ?></li>
 						
 					</ul>
 				</div>
@@ -62,7 +64,7 @@ require('authenticate.php');
 			
 		</div> 
 		<div id="footer"><a href="index.php"><pre>Home</pre></a>
-			<a href="addmovies.php"><pre>Add movies</pre></a>
+			<a href="admin.php"><pre>Admin</pre></a>
 
 		</div>
 	</div>
