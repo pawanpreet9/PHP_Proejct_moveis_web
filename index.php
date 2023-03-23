@@ -29,7 +29,7 @@ require('connect.php');
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+    <link rel="stylesheet" type="text/css" href="style.css">
     <title>Blockbuster Movies - Home</title>
 </head>
 <body>
@@ -37,11 +37,12 @@ require('connect.php');
     <div id="wrapper">
         <div id="header">
             <h1><a href="index.php">Blockbuster Movies</a></h1>
-        </div> 
+        
         <ul id="menu">
             <li><a href="index.php" class="active">Home</a></li>
-            <li><a href="addmovies.php">Add movies</a></li>
+            <li><a href="admin.php">Admin</a></li>
         </ul>
+        </div> 
         <!--loop-->
 
         <div id="info">
@@ -49,16 +50,23 @@ require('connect.php');
          <?php while ($row = $statement->fetch()): ?>
             <form method="get">
                 <div class="movies_description">
-                 <h2><?= $row['movie_name'] ?></h2>
-                 <p><?= $row['description'] ?></p>
-                  
+                 <a href="movieDescription.php?id=<?= $row['movie_id'] ?>"><h2><?= $row['movie_name'] ?></h2></a>
+                 <?php if(strlen($row['description']) > 200): ?>
+                    <div>
+                 <p><?= strip_tags(substr($row['description'],0,150)) ?>
+                <a href="movieDescription.php?id=<?= $row['movie_id'] ?>"> Know more</a></p>
+                  </div>
+                  <?php else: ?>
+                    <div class="content"><?= $row['description'] ?></div>
+                <?php endif ?>
             
                 </div>
             </form>
           <?php endwhile ?>
         </div>
         <div id="footer">
-            Copywrong 2023 - No Rights Reserved
+            <a href="index.php"><pre>Home</pre></a>
+            <a href="admin.php"><pre>Admin</pre></a>
         </div>
     </div>
     
