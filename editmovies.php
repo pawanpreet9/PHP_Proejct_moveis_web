@@ -8,7 +8,7 @@
 ****************/
 
 require('connect.php');
-require('authenticate.php');
+
 
     // UPDATE quote if author, content and id are present in POST.
     if ($_POST && !empty($_POST['name']) && !empty($_POST['description']) && !empty($_POST['id'])&& isset($_POST['button1'])) {
