@@ -9,15 +9,43 @@
 ****************/
 
 require('connect.php');
-require('authenticate.php');
-     $query = "SELECT * FROM movies ORDER BY (movie_id) DESC";
 
-     // A PDO::Statement is prepared from the query.
-     $statement = $db->prepare($query);
+   
+     if (isset($_POST['sort'])) {
+  // Get the user input for the sorting criteria
+  $sort = $_POST['sort'];
 
-     // Execution on the DB server is delayed until we execute().
-     $statement->execute(); 
-    
+  // Extract the sorting column and order from the user input
+  if ($sort == 'name_asc') {
+    $column = 'movie_name';
+    $order = 'ASC';
+  } else if ($sort == 'name_desc') {
+    $column = 'movie_name';
+    $order = 'DESC';
+  } else if ($sort == 'language_asc') {
+    $column = 'language';
+    $order = 'ASC';
+  } else if ($sort == 'language_desc') {
+    $column = 'language';
+    $order = 'DESC';
+  }
+  elseif($sort == 'price_asc'){
+    $column = 'price';
+    $order = 'ASC';
+  }
+  elseif($sort == 'price_desc'){
+    $column = 'price';
+    $order = 'DESC';
+  }
+
+  // Create a PDO query to retrieve the data and sort it according to the user input
+  $statement = $db->prepare("SELECT * FROM movies ORDER BY $column $order");
+
+  // Execute the query with the user input as a parameter
+  $statement->execute();
+
+
+}
 
 
     
@@ -49,6 +77,18 @@ require('authenticate.php');
 
         <div id="info">
             <h1>Movies list </h1>
+            <form method="post" >
+         <label for="sort">Sort by:</label>
+  <select name="sort" id="sort">
+    <option value="name_asc">Name (A-Z)</option>
+    <option value="name_desc">Name (Z-A)</option>
+    <option value="language_asc">Language (oldest first)</option>
+    <option value="language_desc">Language(newest first)</option>
+    <option value="price_asc">Price(lowest first)</option>
+    <option value="price_desc">Price (highest first)</option>
+  </select>
+  <input type="submit" value="Sort">
+        </form>
          <?php while ($row = $statement->fetch()): ?>
             <form method="get">
                 <div class="movies_description">
