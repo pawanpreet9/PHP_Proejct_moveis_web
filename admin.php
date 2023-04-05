@@ -10,8 +10,11 @@
 
 require('connect.php');
 
-   
-     if (isset($_POST['sort'])) {
+
+
+
+     
+ if (isset($_POST['sort'])) {
   // Get the user input for the sorting criteria
   $sort = $_POST['sort'];
 
@@ -46,6 +49,22 @@ require('connect.php');
 
 
 }
+else{
+    $statement = $db->prepare("SELECT * FROM movies ORDER BY movie_name ");
+
+  // Execute the query with the user input as a parameter
+  $statement->execute();
+
+}
+
+ if(isset($_POST['delete'])){
+    $query = "DELETE FROM my_table WHERE id = :id";
+    $statement = $db->prepare($query);
+    $statement->bindParam(':id',$id);
+    $statement->execute();
+
+
+ }  
 
 
     
@@ -70,7 +89,10 @@ require('connect.php');
         
         <ul id="menu">
             <li><a href="index.php" class="active">Home</a></li>
+            <li><a href="viewMovies.php">View Movies</a></li>
             <li><a href="addmovies.php">Add movies</a></li>
+            <li><a href="registeradmin.php">Add new admin</a></li>
+            <li><a href="logout.php">Logout</a></li>
         </ul>
     </div>
         <!--loop-->
@@ -92,7 +114,9 @@ require('connect.php');
          <?php while ($row = $statement->fetch()): ?>
             <form method="get">
                 <div class="movies_description">
-                 <a href="movieDescription.php?id=<?= $row['movie_id'] ?>"><h2><?= $row['movie_name'] ?><a href="editmovies.php?id=<?= $row['movie_id'] ?>" id="edit"> edit</a></h2></a>
+                 <a href="movieDescription.php?id=<?= $row['movie_id'] ?>"><h2><?= $row['movie_name'] ?><a href="delete.php?id=<?= $row['movie_id'] ?>" id="edit"> Delete</a></h2></a>
+                 
+
                  <p><?= $row['description'] ?></p>
                  <ul>
 
@@ -101,6 +125,7 @@ require('connect.php');
                     <li>Actors: <?= $row['actor_names'] ?> </li>
                     <li>Language: <?= $row['language'] ?></li>
                     <li>Price: <?= $row['price'] ?></li>
+                    <li><img src="uploads/<?= $row['image'] ?>"></li>
                  </ul>
                   
             
@@ -110,7 +135,8 @@ require('connect.php');
         </div>
         <div id="footer">
             <a href="index.php"><pre>Home</pre></a>
-            <a href="admin.php"><pre>Admin</pre></a>
+            <a href="viewMovies.php"><pre>View Movies</pre></a>
+            <a href="addmovies.php"><pre>Add movies</pre></a>
         </div>
     </div>
     
