@@ -1,87 +1,68 @@
-
 <?php
-/**
- * Name: Pawanpreet Kaur
- * Project
- * Description:
- * */
+require 'connect.php';
 
-  /*define('ADMIN_LOGIN','employee');
+session_start();
 
-  define('ADMIN_PASSWORD','mypass');
-
-  if (!isset($_SERVER['PHP_AUTH_USER']) || !isset($_SERVER['PHP_AUTH_PW'])
-
-      || ($_SERVER['PHP_AUTH_USER'] != ADMIN_LOGIN)
-
-      || ($_SERVER['PHP_AUTH_PW'] != ADMIN_PASSWORD)) {
-
-    header('HTTP/1.1 401 Unauthorized');
-
-    header('WWW-Authenticate: Basic realm="Our Blog"');
-
-    exit("Access Denied: Username and password required.");
-
-  }
-  $sql = "SELECT admin_id,user_name,password FROM admin WHERE user_name = :username";
-  $stmt = $db->prepare($sql);
-
-  $stmt->bindValue(':username',$username);
-*/
- 
-define('BASEPATH', true); 
-require 'connect.php'; 
-
-if(isset($_POST['submit'])){  
-        
-            $dsn = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
-            $dsn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    //ensure fields are not empty
-    $username = !empty($_POST['username']) ? trim($_POST['username']) : null;
-    $passwordAttempt = !empty($_POST['password']) ? trim($_POST['password']) : null;
-    
-    //Retrieve the user account information for the given username.
-    $query = "SELECT admin_id, user_name, password FROM admin WHERE user_name = :username";
-    $statement = $db->prepare($query);
-   
-    $statement->bindValue(':username', $username);
-    
-    
-    $statement->execute();
-    
-    
-    $row = $statement->fetch(PDO::FETCH_ASSOC);
-    
-  
-    if($user === false){
-       echo '<script>alert("invalid username or password")</script>';
-    } else{
-         
-        $validPass = password_verify($passwordAttempt, $row['password']);
-        
-        //If $validPassword is TRUE, the login is done.
-        if($validPass){
-            
-           
-             
-            $_SESSION['admin'] = $username;
-           echo '<script>window.location.replace("admin.php");</script>';
-            exit;
-            
-        } else{
-            //$validPassword was FALSE. Passwords do not match.
-            echo '<script>alert("invalid username or password, Please Try again")</script>';
-        }
-    }
-    
+// If the user is already logged in, redirect them to the dashboard page
+if (isset($_SESSION['admin_id'])) {
+  header('Location: admin.php');
+  exit();
 }
 
-   
+// Check if the form has been submitted
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+  // Get the username and password from the form
+  $adminname = $_POST['adminname'];
+  $password = $_POST['password'];
 
+  // Connect to the database using PDO
+
+  //$db = new PDO($dsn, $user, $password);
+
+  // Prepare the SQL query
+  $sql = "SELECT * FROM admin WHERE admin_name = :adminname";
+
+  // Execute the query and fetch the result
+  $stmt = $db->prepare($sql);
+  $stmt->execute(['adminname' => $adminname]);
+  $row = $stmt->fetch();
+
+  // Verify the password
+  if ($row && password_verify($password, $row['password'])) {
+    // Password is correct, start a new session
+    session_regenerate_id();
+    $_SESSION['admin_id'] = $row['admin_id'];
+    $_SESSION['adminname'] = $row['admin_name'];
+
+    // Redirect the user to the dashboard page
+    header('Location: admin.php');
+    exit();
+  } else {
+    // Password is incorrect, show an error message
+    $error = 'Invalid adminname or password';
+  }
+}
 ?>
-<form action="authenticate.php" method="post">                          
- <input type="text" name="username" placeholder="Username">
- <input type="password" name="password" placeholder="Password">    
- <button name="submit" type="submit">sign in</button>
- </form>
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Login Page</title>
+  </head>
+  <body>
+    <h1>Login As admin</h1>   
+    <?php if (isset($error)): ?>
+      <p><?php echo $error; ?></p>
+    <?php endif; ?>
+    <form action="authenticate.php" method="post">
+      <label for="adminname">Admin Name:</label>
+      <input type="text" id="adminname" name="adminname" required><br><br>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required><br><br>
+      <input type="submit" value="Signin">
+      
+    </form>
+  </body>
+</html>
+
