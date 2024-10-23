@@ -10,8 +10,6 @@ This project is a **content management system (CMS)** for **Blockbuster Pictures
 - [Database Structure](#database-structure)
 - [Installation](#installation)
 - [Usage](#usage)
-- [License](#license)
-- [Contact](#contact)
 
 ## Introduction
 
@@ -71,3 +69,82 @@ CREATE TABLE directors (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(255) NOT NULL
 );
+```
+## Installation
+
+### Prerequisites
+
+- **XAMPP**: Includes Apache, MySQL, and PHP. You can download it from [XAMPP's official website](https://www.apachefriends.org/index.html).
+- **phpMyAdmin**: Bundled with XAMPP for managing MySQL databases.
+- **Git**: Required if you want to clone the repository from GitHub.
+
+### Steps
+
+1. **Download and Install XAMPP**
+   - Download XAMPP for your operating system from [XAMPP's official website](https://www.apachefriends.org/index.html).
+   - Follow the installation prompts, and make sure you install **Apache**, **MySQL**, and **phpMyAdmin**.
+   - Once installed, open the **XAMPP Control Panel** and click **Start** for both **Apache** and **MySQL** services.
+
+2. **Clone the Repository**
+   - Navigate to your XAMPP `htdocs` folder, typically located in `C:\xampp\htdocs` on Windows.
+   - Run the following command to clone the repository:
+     ```bash
+     git clone https://github.com/yourusername/movies-website.git
+     cd movies-website
+     ```
+
+3. **Set Up the Database**
+   - Open [phpMyAdmin](http://localhost/phpmyadmin) in your browser.
+   - Create a new database, for example, `movies_db`.
+   - Import the provided SQL file (if available) to set up the necessary tables.
+
+4. **Configure Database Connection**
+   - Open the project’s configuration file (e.g., `config.php` or `.env`) and update the database connection settings:
+     ```php
+     DB_HOST=127.0.0.1
+     DB_NAME=movies_db
+     DB_USERNAME=root
+     DB_PASSWORD=
+     ```
+
+5. **Access the Website**
+   - Open your browser and go to `http://localhost/movies-website` to view the user-facing part of the site.
+   - To access the admin panel, navigate to `http://localhost/movies-website/admin`.
+
+## Usage
+
+### 1. Admin Panel
+The admin panel is designed for authorized users (such as employees) to manage movies and their associated data.
+
+- **URL**: `http://localhost/movies-website/admin`
+- **Features**:
+  - **Add New Movies**: Authorized users can add new movies to the database by providing details such as the movie title, genre, release date, language, duration, and description.
+  - **Edit Movies**: Existing movies can be updated with new information.
+  - **Delete Movies**: Users can remove movies from the website.
+  - **Manage Genres**: Admins can add, edit, or delete genres.
+  - **Manage Actors & Directors**: Admins can add information about the actors and directors associated with the movies.
+
+### 2. User Interface (Customer-Facing)
+
+This section is where users (customers) can browse through the available movies and get detailed information about each one.
+
+- **URL**: `http://localhost/movies-website`
+- **Features**:
+  - **View Movies**: Users can browse through the movie catalog, which displays the available movies with details such as title, genre, release date, and more.
+  - **Search Functionality**: Customers can search for movies by title, genre, or other criteria.
+  - **Movie Details**: Clicking on a movie displays more detailed information, including actors and directors.
+  - **Contact Us**: Users can fill out a form on the Contact Us page to send inquiries.
+
+### 3. Managing the Database
+
+Using **phpMyAdmin**, you can view and modify the database as needed.
+
+- **phpMyAdmin URL**: `http://localhost/phpmyadmin`
+- **Database Name**: `movies_db`
+- You can manually edit or add to the database via phpMyAdmin, such as adding new movies, genres, actors, and directors.
+
+### 4. Security
+
+- Ensure that access to the admin panel is restricted to authorized personnel.
+- Secure the **phpMyAdmin** interface by setting a strong password for the MySQL `root` user.
+
